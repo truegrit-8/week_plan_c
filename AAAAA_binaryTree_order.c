@@ -13,7 +13,7 @@ typedef struct __treeNode {
     struct __treeNode *right;
 } BiNode;
 
-BiNode *CreatBiTreePreOrder(void);
+BiNode *CreatBiTreePreOrder(void); // 先序法创建二叉树（递归）
 void PreOrderBiTree(BiNode *root);
 void InOrderBiTree(BiNode *root);
 void PostOrderBiTree(BiNode *root);
@@ -39,13 +39,16 @@ void LayerOrderBiTree1(BiNode *root);
 char *LayerOrderBiTree2(BiNode *root, int *returnSize);
 char **LayerOrderBiTree3(BiNode *root, int *returnSize, int **returnColSize);
 
+// 层序法创建二叉树
+BiNode *CreatBiTreeByLayerIt(char *str, int i);
+
 /**
  main函数
  */
 int main(int argc, const char *argv[])
 {
     printf("\n>> -------- %s -------\n", __TIME__);
-
+#if 0
     printf("使用先序创建二叉树， #表示空节点，请输入二叉树的数据：\n");
     // 示例：-+a##*b##-c##d##/e##f##
     // 前序：-+a*b-cd/ef
@@ -58,6 +61,11 @@ int main(int argc, const char *argv[])
     //      b-
     //      cd
     BiNode *root = CreatBiTreePreOrder();
+#else
+    printf("层序创建二叉树， #表示空节点，必须为满二叉树：\n");
+    char str[100] = "-+/a*ef####b-##########cd########";
+    BiNode *root = CreatBiTreeByLayerIt(str, 0);
+#endif
 
     PrintResult("前序遍历", PreOrderBiTree, root);
     PrintResult("中序遍历", InOrderBiTree, root);
@@ -275,14 +283,14 @@ char *LayerOrderBiTree2(BiNode *root, int *returnSize)
 
 /**
  层序遍历：二维数组承接结果
- */-+a##*b##-c##d##/e##f##
+ */
 char **LayerOrderBiTree3(BiNode *root, int *returnSize, int **returnColSize)
 {
     BiNode *pNode = root;
     CircleQueue *que = InitQueue();
 
     char **ret = (char **)malloc(sizeof(char *) * 10); // 先分配10行
-    (*returnColSize) = (char *)malloc(sizeof(char) * 10); // 先分配10行, 后面会修改
+    (*returnColSize) = (int *)malloc(sizeof(int) * 10); // 先分配10行, 后面会修改
 
     if (root != NULL) {
         PushQue(que, *root);
@@ -309,4 +317,19 @@ char **LayerOrderBiTree3(BiNode *root, int *returnSize, int **returnColSize)
     }
     *returnSize = row;
     return ret;
+}
+
+/** 
+ 层序法创建二叉树，递归法，必须为满二叉树，#表示空节点
+*/
+BiNode *CreatBiTreeByLayerIt(char *str, int i)
+{
+    if (i >= strlen(str) || str[i] == '#') {
+        return NULL;
+    }
+    BiNode *root = (BiNode *)malloc(sizeof(BiNode));
+    root->val = str[i];
+    root->left = CreatBiTreeByLayerIt(str, 2 * i + 1);
+    root->right = CreatBiTreeByLayerIt(str, 2 * i + 2);
+    return root;
 }
