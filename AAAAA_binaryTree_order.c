@@ -71,21 +71,20 @@ int main(int argc, const char *argv[])
     PrintResult("中序遍历", InOrderBiTree, root);
     PrintResult("后序遍历", PostOrderBiTree, root);
 
-    // TODO: 这三种方式不能同时存在，这是为什么，没有free吗
+    // TODO: 
     /* 方式1：直接打印 */
-    // PrintResult("层序遍历1", LayerOrderBiTree1, root);
+    PrintResult("层序遍历1", LayerOrderBiTree1, root);
 
     /* 方式2：一维数组承接 */
-    // printf("\n>> -------- %s -------\n", "层序遍历2");
-    // int returnSize;
-    // char *ret = LayerOrderBiTree2(root, &returnSize);
-    // for (int i = 0; i < returnSize; i++) {
-    //     printf("%c", ret[i]);
-    // }
+    printf("\n>> -------- %s -------\n", "层序遍历2");
+    int returnSize;
+    char *ret = LayerOrderBiTree2(root, &returnSize);
+    for (int i = 0; i < returnSize; i++) {
+        printf("%c", ret[i]);
+    }
 
     /* 方式3：二维数组承接 */
     printf("\n>> -------- %s -------\n", "层序遍历3");
-    int returnSize;
     int *returnColSize;
     char **ans = LayerOrderBiTree3(root, &returnSize, &returnColSize);
     for (int i = 0; i < returnSize; i++) {
@@ -180,23 +179,6 @@ CircleQueue *InitQueue(void)
 }
 
 /**
- 销毁队列
- */
-void DestoryQueue(CircleQueue* que)
-{
-    // while (que->size) {-+a##*b##-c##d##/e##f##
-    //     free(que->front);
-    //     que->size--;
-    // }
-    // for (int i = 0; i < QUEUE_MAX; i++) {
-    //     free(que->data[i]);
-    // }
-    
-    // free(que->data);
-    // free(que);
-}
-
-/**
  入队
  */
 bool PushQue(CircleQueue *que, BiNode node)
@@ -229,7 +211,7 @@ bool PopQue(CircleQueue *que, BiNode *pNode)
  */
 void LayerOrderBiTree1(BiNode *root)
 {
-    BiNode *pNode = root;
+    BiNode node = *root; // 注意不能用BiNode *pNode = root, PopQue(que, pNode)因为是对指针直接操作会同时修改pNode和root
     CircleQueue *que = InitQueue();
 
     if (root != NULL) {
@@ -237,15 +219,15 @@ void LayerOrderBiTree1(BiNode *root)
     }
 
     while (que->size) {
-        PopQue(que, pNode);
+        PopQue(que, &node);
 
-        printf("%c", pNode->val);
+        printf("%c", node.val);
 
-        if (pNode->left) {
-            PushQue(que, *(pNode->left));
+        if (node.left) {
+            PushQue(que, *(node.left));
         }
-        if (pNode->right) {
-            PushQue(que, *(pNode->right));
+        if (node.right) {
+            PushQue(que, *(node.right));
         }
     }
 }
@@ -255,7 +237,7 @@ void LayerOrderBiTree1(BiNode *root)
  */
 char *LayerOrderBiTree2(BiNode *root, int *returnSize)
 {
-    BiNode *pNode = root;
+    BiNode node = *root;
     CircleQueue *que = InitQueue();
 
     char *ret = (char *)malloc(sizeof(char) * 20); // 数组大小取20
@@ -266,15 +248,15 @@ char *LayerOrderBiTree2(BiNode *root, int *returnSize)
 
     int idx = 0;
     while (que->size) {
-        PopQue(que, pNode);
+        PopQue(que, &node);
 
-        ret[idx++] = pNode->val;
+        ret[idx++] = node.val;
 
-        if (pNode->left) {
-            PushQue(que, *(pNode->left));
+        if (node.left) {
+            PushQue(que, *(node.left));
         }
-        if (pNode->right) {
-            PushQue(que, *(pNode->right));
+        if (node.right) {
+            PushQue(que, *(node.right));
         }
     }
     *returnSize = idx;
@@ -286,7 +268,7 @@ char *LayerOrderBiTree2(BiNode *root, int *returnSize)
  */
 char **LayerOrderBiTree3(BiNode *root, int *returnSize, int **returnColSize)
 {
-    BiNode *pNode = root;
+    BiNode node = *root;
     CircleQueue *que = InitQueue();
 
     char **ret = (char **)malloc(sizeof(char *) * 10); // 先分配10行
@@ -303,14 +285,14 @@ char **LayerOrderBiTree3(BiNode *root, int *returnSize, int **returnColSize)
         (*returnColSize)[row] = size; // 每行有size个元素
 
         for (int j = 0; j < size; j++) {
-            PopQue(que, pNode);
-            ret[row][j] = pNode->val;
+            PopQue(que, &node);
+            ret[row][j] = node.val;
 
-            if (pNode->left) {
-                PushQue(que, *(pNode->left));
+            if (node.left) {
+                PushQue(que, *(node.left));
             }
-            if (pNode->right) {
-                PushQue(que, *(pNode->right));
+            if (node.right) {
+                PushQue(que, *(node.right));
             }
         }
         row++; // 遍历每行元素，行数加1
