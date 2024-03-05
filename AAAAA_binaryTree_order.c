@@ -25,7 +25,7 @@ typedef struct {
     int front;
     int rear;
     int size;
-    BiNode *data;
+    BiNode *data; // 数组存放的是节点
 } CircleQueue;
 
 // 循环队列初始化和push pop
@@ -40,8 +40,8 @@ char *LayerOrderBiTree2(BiNode *root, int *returnSize);
 char **LayerOrderBiTree3(BiNode *root, int *returnSize, int **returnColSize);
 
 // 层序法创建二叉树
-BiNode *CreatBiTreeByLayerIt(char *str, int i);
-BiNode *CreatBiTreeByLayer(void);
+BiNode *CreatBiTreeByLayerIt(char *str, int i); // 递归法创建，输入str必须是满二叉树
+BiNode *CreatBiTreeByLayer(char *str);
 
 /**
  main函数
@@ -64,7 +64,7 @@ int main(int argc, const char *argv[])
     BiNode *root = CreatBiTreePreOrder();
 #else
     // printf("层序创建二叉树， #表示空节点，必须为满二叉树：\n");
-    // char str[100] = "-+/a*ef####b-##########cd########";
+    // char str[100] = "-+/a*ef##b-##########cd########";
     // BiNode *root = CreatBiTreeByLayerIt(str, 0);
 
     printf("层序创建二叉树， #表示空节点：\n");
@@ -78,7 +78,8 @@ int main(int argc, const char *argv[])
     //      a*ef
     //      b-
     //      cd
-    BiNode *root = CreatBiTreeByLayer();
+    char str[100] = "-+/a*ef##b-######cd####"; // 层序创建二叉树， #表示空节点
+    BiNode *root = CreatBiTreeByLayer(str);
 #endif
 
     PrintResult("前序遍历", PreOrderBiTree, root);
@@ -330,17 +331,19 @@ BiNode *CreatBiTreeByLayerIt(char *str, int i)
 }
 
 /** 
- 层序法创建二叉树，scanf输入，#表示空节点
+ 层序法创建二叉树，字符串输入，#表示空节点
 */
-BiNode *CreatBiTreeByLayer(void)
+BiNode *CreatBiTreeByLayer(char *str)
 {
     CircleQueue *que = InitQueue();
     BiNode *root;
     BiNode *pNode;
 
     // 对根节点判断是否为空
-    char ch; // 待输入的字符
-    scanf("%c", &ch);
+    int idx = 0;
+    char ch = str[idx++];
+    // char ch;
+    // scanf("%c", &ch);
     if (ch == '#') {
         return NULL;
     }
@@ -354,7 +357,8 @@ BiNode *CreatBiTreeByLayer(void)
         PopQue(que, pNode);
 
         // 压入左节点
-        scanf("%c", &ch);
+        // scanf("%c", &ch);
+        ch = str[idx++];
         if (ch == '#') {
             pNode->left = NULL;
         } else {
@@ -364,7 +368,8 @@ BiNode *CreatBiTreeByLayer(void)
         }
 
         // 压入右节点
-        scanf("%c", &ch);
+        // scanf("%c", &ch);
+        ch = str[idx++];
         if (ch == '#') {
             pNode->right = NULL;
         } else {
