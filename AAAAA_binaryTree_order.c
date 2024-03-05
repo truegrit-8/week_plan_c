@@ -26,7 +26,7 @@ typedef struct {
     int rear;
     int size;
     // BiNode *data; // 数组存放的是节点
-    BiNode *data[QUEUE_MAX]; // 数组存放的是节点
+    BiNode *data[QUEUE_MAX]; // 数组存放的是节点的地址
 } CircleQueue;
 
 // 循环队列初始化和push pop
@@ -85,7 +85,7 @@ int main(int argc, const char *argv[])
     PrintResult("层序遍历1", LayerOrderBiTree1, root);
 
     /* 方式2：一维数组承接 */
-    printf("\n>> -------- %s -------\n", "层序遍历2");
+    printf(">> -------- %s -------\n", "层序遍历2");
     int returnSize;
     char *ret = LayerOrderBiTree2(root, &returnSize);
     for (int i = 0; i < returnSize; i++) {
@@ -211,8 +211,7 @@ BiNode *PopQue(CircleQueue *que)
     }
     que->front = (que->front + 1) % QUEUE_MAX;
     // pNode = que->data[que->front];
-    BiNode *pNode = (BiNode *)malloc(sizeof(BiNode));
-    pNode = que->data[que->front];
+    BiNode *pNode = que->data[que->front];
     que->size--;
     return pNode;
 }
@@ -334,8 +333,7 @@ BiNode *CreatBiTreeByLayerIt(char *str, int i)
 BiNode *CreatBiTreeByLayer(char *str)
 {
     CircleQueue *que = InitQueue();
-    BiNode *root;
-    BiNode *pNode;
+    BiNode *pNode; // pNode最终会遍历至最后一层的最后一个节点
 
     // 对根节点判断是否为空
     int idx = 0;
@@ -345,7 +343,7 @@ BiNode *CreatBiTreeByLayer(char *str)
     if (ch == '#') {
         return NULL;
     }
-    root = (BiNode *)malloc(sizeof(BiNode));
+    BiNode *root = (BiNode *)malloc(sizeof(BiNode));
     root->val = ch;
     root->left = NULL;
     root->right = NULL;
