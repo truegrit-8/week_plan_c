@@ -41,6 +41,7 @@ char **LayerOrderBiTree3(BiNode *root, int *returnSize, int **returnColSize);
 
 // 层序法创建二叉树
 BiNode *CreatBiTreeByLayerIt(char *str, int i);
+BiNode *CreatBiTreeByLayer(void);
 
 /**
  main函数
@@ -62,16 +63,28 @@ int main(int argc, const char *argv[])
     //      cd
     BiNode *root = CreatBiTreePreOrder();
 #else
-    printf("层序创建二叉树， #表示空节点，必须为满二叉树：\n");
-    char str[100] = "-+/a*ef####b-##########cd########";
-    BiNode *root = CreatBiTreeByLayerIt(str, 0);
+    // printf("层序创建二叉树， #表示空节点，必须为满二叉树：\n");
+    // char str[100] = "-+/a*ef####b-##########cd########";
+    // BiNode *root = CreatBiTreeByLayerIt(str, 0);
+
+    printf("层序创建二叉树， #表示空节点：\n");
+    // 示例：-+/a*ef##b-######cd####
+    // 前序：-+a*b-cd/ef
+    // 中序: a+b*c-d-e/f
+    // 后序: abcd-*+ef/-
+    // 层序:
+    //      -
+    //      +/
+    //      a*ef
+    //      b-
+    //      cd
+    BiNode *root = CreatBiTreeByLayer();
 #endif
 
     PrintResult("前序遍历", PreOrderBiTree, root);
     PrintResult("中序遍历", InOrderBiTree, root);
     PrintResult("后序遍历", PostOrderBiTree, root);
 
-    // TODO: 
     /* 方式1：直接打印 */
     PrintResult("层序遍历1", LayerOrderBiTree1, root);
 
@@ -313,5 +326,52 @@ BiNode *CreatBiTreeByLayerIt(char *str, int i)
     root->val = str[i];
     root->left = CreatBiTreeByLayerIt(str, 2 * i + 1);
     root->right = CreatBiTreeByLayerIt(str, 2 * i + 2);
+    return root;
+}
+
+/** 
+ 层序法创建二叉树，scanf输入，#表示空节点
+*/
+BiNode *CreatBiTreeByLayer(void)
+{
+    CircleQueue *que = InitQueue();
+    BiNode *root;
+    BiNode *pNode;
+
+    // 对根节点判断是否为空
+    char ch; // 待输入的字符
+    scanf("%c", &ch);
+    if (ch == '#') {
+        return NULL;
+    }
+    root = (BiNode *)malloc(sizeof(BiNode));
+    root->val = ch;
+    root->left = NULL;
+    root->right = NULL;
+    PushQue(que, *root);
+
+    while(que->size) {
+        PopQue(que, pNode);
+
+        // 压入左节点
+        scanf("%c", &ch);
+        if (ch == '#') {
+            pNode->left = NULL;
+        } else {
+            pNode->left = (BiNode *)malloc(sizeof(BiNode));
+            pNode->left->val = ch;
+            PushQue(que, *(pNode->left));
+        }
+
+        // 压入右节点
+        scanf("%c", &ch);
+        if (ch == '#') {
+            pNode->right = NULL;
+        } else {
+            pNode->right = (BiNode *)malloc(sizeof(BiNode));
+            pNode->right->val = ch;
+            PushQue(que, *(pNode->right));
+        }
+    }
     return root;
 }
