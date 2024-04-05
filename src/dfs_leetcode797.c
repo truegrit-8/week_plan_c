@@ -36,10 +36,11 @@ graph[i] 中的所有元素 互不相同
 // 全局变量版本，dfs入参个数4
 #if 1
 int **ans = NULL;  // 返回结果：二维数组
-int *stk = NULL;   // 单次路径：一维数组
 int ansSize;   // 二维数组行数, 不要在这里初始化
-int stkSize;   // path栈的大小, 不要在这里初始化
 int *col = NULL;   // 可选：每一行的大小可能不一样
+
+int *stk = NULL;   // 单次路径：一维数组
+int stkSize;   // path栈的大小, 不要在这里初始化
 
 void dfs(int** graph, int graphSize, int* graphColSize, int idx)
 {
