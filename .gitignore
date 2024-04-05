@@ -3,4 +3,5 @@
 *.bin
 
 # 忽略文件夹
-.vscode/
+#.vscode/
+build/
