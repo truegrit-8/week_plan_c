@@ -46,10 +46,8 @@ BiNode *CreatBiTreeByLayer(char *str);
 /**
  main函数
  */
-int main(int argc, const char *argv[])
+int test_binaryTree_order(void)
 {
-    printf("\n>> -------- %s -------\n", __TIME__);
-
     // 答案如下
     // 前序：-+a*b-cd/ef
     // 中序: a+b*c-d-e/f

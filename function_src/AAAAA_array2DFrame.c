@@ -55,7 +55,7 @@ int **Array2DFrameOutput(int *returnSize, int **returnColSize)
 
 
 // ------------------------ 输入示例 main 函数------------------------
-int main(int argc, const char *argv[])
+int test_array2DFrame(void)
 {
 #if 1 // 方式一：动态分配
     // step1. 确定行数，动态申请二维指针
