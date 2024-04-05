@@ -16,6 +16,15 @@
 输出：[[0,1,3],[0,2,3]]
 解释：有两条路径 0 -> 1 -> 3 和 0 -> 2 -> 3
 
+
+提示：
+
+n == graph.length
+2 <= n <= 15
+0 <= graph[i][j] < n
+graph[i][j] != i（即不存在自环）
+graph[i] 中的所有元素 互不相同
+保证输入为 有向无环图（DAG）
 */
 
 /**
@@ -23,7 +32,7 @@
  * The sizes of the arrays are returned as *returnColumnSizes array.
  * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
  */
-
+#define MAX 8192 // n个点最多有2^(n-2)种方案，15个点最多2^13 = 8192条路径数
 // 全局变量版本，dfs入参个数4
 #if 1
 int **ans = NULL;  // 返回结果：二维数组
@@ -55,9 +64,9 @@ void dfs(int** graph, int graphSize, int* graphColSize, int idx)
 int** allPathsSourceTarget(int** graph, int graphSize, int* graphColSize, int* returnSize, int** returnColumnSizes)
 {
     // 初始化
-    ans = (int **)malloc(sizeof(int *) * 16384); // 尽可能大, 否则heap-buffer-overflow
-    stk = (int *)malloc(sizeof(int) * 16384); // 尽可能大, 否则heap-buffer-overflow
-    col = (int *)malloc(sizeof(int) * 16384); // 尽可能大, 否则heap-buffer-overflow
+    ans = (int **)malloc(sizeof(int *) * MAX); // 尽可能大, 否则heap-buffer-overflow
+    stk = (int *)malloc(sizeof(int) * MAX); // 尽可能大, 否则heap-buffer-overflow
+    col = (int *)malloc(sizeof(int) * MAX); // 尽可能大, 否则heap-buffer-overflow
     ansSize = 0;   // 二维数组行数，在主函数中初始化，而不要在全局变量定义处初始化
     stkSize = 0;   // path栈的大小
 
@@ -102,11 +111,11 @@ void dfs(int** graph, int graphSize, int* graphColSize, int idx, int *returnSize
 int** allPathsSourceTarget(int** graph, int graphSize, int* graphColSize, int* returnSize, int** returnColumnSizes)
 {
     // 二维数组初始化
-    ans = (int **)malloc(sizeof(int *) * 16384); // 尽可能大
-    *returnColumnSizes = (int *)malloc(sizeof(int) * 16384); // 尽可能大
+    ans = (int **)malloc(sizeof(int *) * MAX); // 尽可能大
+    *returnColumnSizes = (int *)malloc(sizeof(int) * MAX); // 尽可能大
     *returnSize = 0;
     // 栈初始化
-    stk = (int *)malloc(sizeof(int) * 16384); // 尽可能大
+    stk = (int *)malloc(sizeof(int) * MAX); // 尽可能大
     stkSize = 0;   // path栈的大小
 
     // 将第一点压入栈中
