@@ -49,7 +49,7 @@ void dfs(int** graph, int graphSize, int* graphColSize, int idx)
         memcpy(tmpPath, stk, sizeof(int) * stkSize);
         ans[ansSize] = tmpPath;
 
-        // ans[ansSize] = stk;
+        // ans[ansSize] = stk; // 不能直接赋值，因为stk不知道要复制多大给ans[ansSize]
         col[ansSize] = stkSize;
         ansSize++;
         return;
