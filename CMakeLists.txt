@@ -1,3 +1,6 @@
+# 指定cmake的最低版本
+cmake_minimum_required(VERSION 3.28.3)
+
 # 设置项目名称，参数可以随意指定
 project(week_plan)
 
