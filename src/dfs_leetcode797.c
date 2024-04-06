@@ -172,9 +172,11 @@ void test_dfs_leetcode797_case2(void)
     }
 }
 
+#define MAP_ROWS 12
+#define MAP_COLS 10
 void test_dfs_leetcode797_case3(void)
 {
-    int graph[12][10] = {{4, 3, 11, 5, 7, 8, 10, 2, 1, 6},
+    int graph[MAP_ROWS][MAP_COLS] = {{4, 3, 11, 5, 7, 8, 10, 2, 1, 6},
                         {2, 9, 3, 11, 10, 6, 7, 4, 5},
                         {10, 7, 9, 4, 3, 6, 11, 5},
                         {9, 4, 11, 6, 8, 10, 7, 5},
@@ -186,10 +188,26 @@ void test_dfs_leetcode797_case3(void)
                         {11, 10},
                         {11},
                         {}};
-    int graphSize = 12;
-    int *graphPtr[12] = {graph[0], graph[1], graph[2], graph[3], graph[4], graph[5],
-                         graph[6], graph[7], graph[8], graph[9], graph[10], graph[11]};
-    int graphColSize[12] = {10, 9, 8, 8, 7, 6, 5, 4, 2, 2, 1, 0};
+    int graphSize = MAP_ROWS;
+    // int *graphPtr[MAP_ROWS] = {graph[0], graph[1], graph[2], graph[3], graph[4], graph[5],
+    //                      graph[6], graph[7], graph[8], graph[9], graph[10], graph[11]};
+    int *graphPtr[MAP_ROWS];
+    for (int i = 0; i < MAP_ROWS; i++) {
+        graphPtr[i] = graph[i];
+    }
+
+    // int graphColSize[MAP_ROWS] = {10, 9, 8, 8, 7, 6, 5, 4, 2, 2, 1, 0};
+    int graphColSize[MAP_ROWS];
+    for (int i = 0; i < MAP_ROWS; i++) {
+        int cnt = 0;
+        int j = 0;
+        while (graph[i][j] != 0 && j < MAP_COLS) {
+            cnt++;
+            j++;
+        }
+        graphColSize[i] = cnt;
+        // printf("%d ", graphColSize[i]);
+    }
 
     int returnSize = 0;
     int *returnColumnSizes = NULL;
