@@ -5,6 +5,7 @@
 #include "AAAAA_array2DFrame.h"
 #include "AAAAA_binaryTree_order.h"
 #include "dfs_leetcode797.h"
+#include "dfs_leetcode200_numIslands.h"
 
 int main(int argc, char *argv[])
 {
@@ -12,7 +13,9 @@ int main(int argc, char *argv[])
 
     // test_array2DFrame();
     // test_binaryTree_order();
-    test_dfs_leetcode797_case3();
+    // test_dfs_leetcode797_case3();
+    test_dfs_leetcode200_numIslands_case1();
+    test_dfs_leetcode200_numIslands_case2();
     // getchar();
     return 0;
 }
